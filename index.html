@@ -1,31 +1,98 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#15101f">
 <title>VEIT Status</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,system-ui,sans-serif;
-background:#15101f;color:#f4efe6;padding:20px;line-height:1.5}
-h1{font-size:1.8rem;margin:0 0 2px}.sub{opacity:.5;font-size:.8rem;margin-bottom:22px}
-.card{background:#1f1830;border:1px solid #34294a;border-radius:14px;padding:16px 18px;margin-bottom:16px}
-.card h2{margin:0 0 10px;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#e8a555}
-.nudge{white-space:pre-wrap;font-size:1rem}
-ul{margin:0;padding-left:20px}li{margin:6px 0}
-.log li{opacity:.7;font-size:.85rem;list-style:none;padding-left:0;border-left:2px solid #4a3f5a;padding:2px 0 2px 12px}
-a{color:#e8735a}</style></head><body>
-<h1>VEIT</h1><div class="sub">Live status. Auto-updated by your agents.</div>
-<div class="card"><h2>Today's nudge</h2><div class="nudge"># VEIT Daily Coach - 2026-06-20
+*{box-sizing:border-box}
+:root{--bg:#15101f;--card:#1f1830;--line:#34294a;--cream:#f4efe6;--gold:#e8a555;--coral:#e8735a;--green:#58c838;--mute:#9a8bb0}
+html{font-size:17px}
+body{margin:0;font-family:-apple-system,system-ui,"Segoe UI",sans-serif;background:var(--bg);color:var(--cream);
+ -webkit-font-smoothing:antialiased;padding:22px 18px 60px;max-width:1100px;margin:0 auto;overflow-x:hidden}
+.now .task,.task-list .t,.sprint,.step .ms,.activity .b{overflow-wrap:break-word;word-break:break-word}
+header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+h1{font-size:2rem;margin:0;letter-spacing:.04em;font-weight:800}
+.tag-week{font-size:.72rem;color:var(--mute)}
+.lede{color:var(--mute);font-size:.82rem;margin:0 0 22px}
 
-**Sprint:** Close M0 (pick the offer) and start the BOM for M1.
+.now{background:linear-gradient(135deg,#2a1840,#3a1c38);border:1px solid #5a2b50;border-radius:18px;padding:20px 20px 22px;margin-bottom:22px}
+.now .kicker{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:8px}
+.now .task{font-size:1.32rem;font-weight:700;line-height:1.35}
+.now .chip{display:inline-block;margin-top:14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;
+ background:rgba(232,115,90,.18);color:#ffb9a6;border:1px solid rgba(232,115,90,.4);padding:4px 10px;border-radius:999px}
 
-M0 has been on the list since yesterday, assigned 5 runs in a row, nothing logged. Today that stops.
+.grid{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:760px){.grid{grid-template-columns:1.3fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.card h2{margin:0 0 14px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
 
-Tasks, smallest first:
-1. Write one sentence: "I'm going with [B or C] because ___." Paste it in the Company-OS log. That is the whole task. B (parts kit) or C (files) gets you to a first sale fastest.
-2. Once M0 is written down: list every physical part in the prototype. Names only, no counts. Sections, washers, glass, hardware.
+.task-list{list-style:none;margin:0;padding:0}
+.task-list li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line)}
+.task-list li:first-child{border-top:0;padding-top:0}
+.box{flex:0 0 20px;height:20px;border:2px solid #6a5a82;border-radius:6px;margin-top:2px}
+.task-list .t{flex:1;font-size:1rem;line-height:1.4}
+.mini{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.06em;color:var(--gold);
+ border:1px solid rgba(232,165,85,.4);padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:middle}
 
-What actually moved since yesterday?
-</div></div>
-<div class="card"><h2>Current sprint</h2><div>Goal: **Close M0 - decide the offer - and draft the BOM for M1.**</div></div>
-<div class="card"><h2>Next actions</h2><div class="nudge">1. Decide the offer model (A/B/C/D). Write one paragraph on why. [M0]
-2. List every physical part in the current prototype: printed sections, washers, glass, hardware. [M1]
-3. Time one full print + assembly, note filament used. (Feeds pricing.) [M2]</div></div>
-<div class="card log"><h2>Recent progress</h2><ul><li>--</li><li>2026-06-20: Daily coach assigned: (1) pick offer A/B/C/D and write one justifying sentence [M0]; (2) list every physical part in the prototype [M1]. Coach re-ran same morning: tasks confirmed, no stale items yet (OS created yesterday). Coach ran again (third run): same tasks in flight, no completed items logged yet. Recommend B or C to reach first sale fastest. Coach ran again (fourth run): M0 and parts list still unconfirmed. Both tasks reassigned. No new tasks added until M0 is closed. Coach ran again (fifth run): M0 still open. Task shrunk to single sentence: "I'm going with [B/C] because ___." Parts list assigned again. No new tasks until M0 is written down. Coach ran again (sixth run): M0 still open, 5 runs untouched. Flagged directly. Task remains: write one sentence picking B or C with one reason. Parts list is task 2. Nothing new until M0 is logged.</li><li>2026-06-19: Company OS created. Confirmed prototype exists, brand = VEIT, research + product page already done. Bottleneck named: no offer decided, nothing priced or buyable.</li></ul></div>
+.track{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;align-items:flex-start;position:relative;padding-bottom:16px}
+.step:last-child{padding-bottom:0}
+.dot{flex:0 0 14px;height:14px;border-radius:50%;margin-top:3px;border:2px solid #6a5a82;background:transparent;z-index:1}
+.step.done .dot{background:var(--green);border-color:var(--green)}
+.step.current .dot{background:var(--coral);border-color:var(--coral);box-shadow:0 0 0 4px rgba(232,115,90,.2)}
+.step:not(:last-child):before{content:"";position:absolute;left:6px;top:18px;bottom:0;width:2px;background:var(--line)}
+.step .ms{font-size:.93rem;line-height:1.3}
+.step .ms b{color:var(--cream)}
+.step.todo .ms{color:var(--mute)}
+.step.current .ms b{color:#ffb9a6}
+.step .now-tag{font-size:.6rem;font-weight:700;letter-spacing:.1em;color:var(--coral);display:block;margin-top:1px}
+
+.sprint{font-size:1.05rem;line-height:1.45;font-weight:600}
+.activity{list-style:none;margin:0;padding:0}
+.activity li{padding:9px 0 9px 14px;border-left:2px solid var(--line);margin-bottom:2px}
+.activity .d{font-size:.66rem;color:var(--gold);letter-spacing:.06em;font-weight:700}
+.activity .b{font-size:.84rem;color:#cdbfe0;line-height:1.4;margin-top:2px}
+.foot{margin-top:30px;text-align:center;font-size:.7rem;color:#5f5275}
+a{color:var(--coral)}
+@media(max-width:480px){html{font-size:16px}h1{font-size:1.7rem}.now{padding:18px}.now .task{font-size:1.12rem}.card{padding:16px}}
+</style></head><body>
+
+<header><h1>VEIT</h1><span class="tag-week">this week</span></header>
+<p class="lede">Live status. Auto-updated by your Coach and Partner.</p>
+
+<div class="now">
+  <div class="kicker">Do this now</div>
+  <div class="task">Decide the offer model (A/B/C/D). Write one paragraph on why.</div>
+  <span class="chip">M0</span>
+</div>
+
+<div class="grid">
+  <div class="col">
+    <div class="card">
+      <h2>This week's tasks</h2>
+      <ul class="task-list">
+        <li><span class="box"></span><span class="t">Decide the offer model (A/B/C/D). Write one paragraph on why.<span class="mini">M0</span></span></li><li><span class="box"></span><span class="t">List every physical part in the current prototype: printed sections, washers, glass, hardware.<span class="mini">M1</span></span></li><li><span class="box"></span><span class="t">Time one full print + assembly, note filament used. (Feeds pricing.)<span class="mini">M2</span></span></li>
+      </ul>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <h2>Sprint goal</h2>
+      <div class="sprint"><strong>Close M0 - decide the offer - and draft the BOM for M1.</strong></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <h2>Road to market</h2>
+      <div class="track">
+        <div class="step current"><span class="dot"></span><span class="ms"><b>M0</b> Define the offer<span class="now-tag">YOU ARE HERE</span></span></div><div class="step todo"><span class="dot"></span><span class="ms"><b>M1</b> Productize one sellable unit</span></div><div class="step todo"><span class="dot"></span><span class="ms"><b>M2</b> Economics</span></div><div class="step todo"><span class="dot"></span><span class="ms"><b>M3</b> Make it buyable</span></div><div class="step todo"><span class="dot"></span><span class="ms"><b>M4</b> Proof + audience</span></div><div class="step todo"><span class="dot"></span><span class="ms"><b>M5</b> Launch</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <h2>Recent activity</h2>
+      <ul class="activity">
+        <li><div class="d">2026-06-20</div><div class="b">Daily coach assigned: (1) pick offer A/B/C/D and write one justifying sentence [M0]; (2) list every physical part in the prototype [M1]. Coach re-ran same…</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="foot">VEIT Company OS</div>
 </body></html>
