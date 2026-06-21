@@ -78,7 +78,7 @@ const taskDetail = (t) => {
 // --- parse: recent activity ---
 const acts = [];
 sec("Running log").split(/\n-\s*/).forEach(chunk => {
-  const m = chunk.match(/^(\d{4}-\d{2}-\d{2}):\s*([\s\S]*)/);
+  const m = chunk.replace(/^-\s*/, "").match(/^(\d{4}-\d{2}-\d{2}):\s*([\s\S]*)/);
   if (m) {
     let body = m[2].replace(/\s+/g, " ").trim();
     if (body.length > 180) body = body.slice(0, 177).replace(/\s+\S*$/, "") + "…";
