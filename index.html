@@ -89,15 +89,6 @@ a{color:var(--coral)}
 
 <div class="grid">
   <div class="col">
-    <div class="card capture">
-      <h2>Log an update</h2>
-      <textarea id="capText" placeholder="What did you do, decide, or get stuck on? e.g. 'Going with B, parts kit. Found glass at the thrift store.'"></textarea>
-      <div class="caprow">
-        <select id="capTask"><option value="">General</option><option value="Pick the ONE SKU to launch first. Fastest to a first sale = ">Pick the ONE SKU to launch first. Fastes</option><option value="For that SKU, list every physical part: printed sections, wa">For that SKU, list every physical part: </option><option value="Time one full print + assembly of that SKU, note filament us">Time one full print + assembly of that S</option></select>
-        <button id="capSend">Send</button>
-      </div>
-      <div id="capStatus"></div>
-    </div>
     <div class="card">
       <h2>This week's tasks</h2>
       <details class="acc"><summary><span class="box"></span><span class="t">Pick the ONE SKU to launch first. Fastest to a first sale = a builder kit without glass (Beginner or Medium). Write one line: "Launching ___ first."<span class="mini">M1</span></span><span class="chev">&#9656;</span></summary><div class="detail"><p class="why">Part of <b>M1 - Productize the first sellable unit</b></p><p class="d-intro">Pick ONE launch SKU (fastest to first sale, likely a builder kit without glass). Lock its printed parts, washer/glass spec, hardware list (BOM), and a build guide. One configuration, not the whole line at once.</p></div></details><details class="acc"><summary><span class="box"></span><span class="t">For that SKU, list every physical part: printed sections, washers, hardware (no glass if BYO). That is its BOM.<span class="mini">M1</span></span><span class="chev">&#9656;</span></summary><div class="detail"><p class="why">Part of <b>M1 - Productize the first sellable unit</b></p><p class="d-intro">Pick ONE launch SKU (fastest to first sale, likely a builder kit without glass). Lock its printed parts, washer/glass spec, hardware list (BOM), and a build guide. One configuration, not the whole line at once.</p></div></details><details class="acc"><summary><span class="box"></span><span class="t">Time one full print + assembly of that SKU, note filament used. Feeds the price.<span class="mini">M2</span></span><span class="chev">&#9656;</span></summary><div class="detail"><p class="why">Part of <b>M2 - Economics</b></p><p class="d-intro">Cost per unit (print time, filament, hardware, your time), set price, confirm margin.</p></div></details>
@@ -122,28 +113,5 @@ a{color:var(--coral)}
   </div>
 </div>
 
-<div class="foot">VEIT Company OS</div>
-<script>
-// Capture: POST the update to the Cloudflare Worker, which saves it to the plan's inbox.
-var CAPTURE_URL = "CAPTURE_URL_PLACEHOLDER";
-(function(){
-  var btn=document.getElementById("capSend"), txt=document.getElementById("capText"),
-      sel=document.getElementById("capTask"), st=document.getElementById("capStatus");
-  if(!btn) return;
-  function setSt(m,c){ st.textContent=m; st.className=c||""; }
-  btn.addEventListener("click", async function(){
-    var t=(txt.value||"").trim();
-    if(!t){ setSt("Type something first.","err"); return; }
-    if(CAPTURE_URL.indexOf("PLACEHOLDER")>-1){ setSt("Capture box not connected yet.","err"); return; }
-    btn.disabled=true; setSt("Sending...");
-    try{
-      var r=await fetch(CAPTURE_URL,{method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({text:t,task:sel.value||""})});
-      if(r.ok){ setSt("Logged. Your Coach will fold it in.","ok"); txt.value=""; }
-      else{ setSt("Save failed ("+r.status+"). Try again.","err"); }
-    }catch(e){ setSt("Network error. Try again.","err"); }
-    btn.disabled=false;
-  });
-})();
-</script>
+<div class="foot">VEIT Company OS &middot; updates via Claude in terminal</div>
 </body></html>
