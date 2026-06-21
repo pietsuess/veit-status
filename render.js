@@ -159,6 +159,14 @@ details[open] .chev{transform:rotate(90deg)}
 .foot{margin-top:30px;text-align:center;font-size:.7rem;color:#5f5275}
 a{color:var(--coral)}
 @media(max-width:480px){html{font-size:16px}h1{font-size:1.7rem}.now .task{font-size:1.12rem}}
+.capture textarea{width:100%;min-height:84px;background:#181225;border:1px solid var(--line);border-radius:10px;
+ color:var(--cream);padding:11px;font:inherit;font-size:.92rem;resize:vertical}
+.caprow{display:flex;gap:8px;margin-top:9px}
+.caprow select{flex:1;min-width:0;background:#181225;border:1px solid var(--line);border-radius:10px;color:var(--cream);padding:9px;font:inherit;font-size:.82rem}
+.caprow button{flex:0 0 auto;background:var(--coral);color:#fff;border:0;border-radius:10px;padding:9px 22px;font:inherit;font-weight:700;cursor:pointer}
+.caprow button:disabled{opacity:.5}
+#capStatus{font-size:.78rem;margin-top:8px;min-height:1.1em}
+#capStatus.ok{color:var(--green)}#capStatus.err{color:#ff8a8a}
 </style></head><body>
 
 <header><h1>VEIT</h1><span class="tag-week">${esc(sprint ? "this week" : "")}</span></header>
@@ -173,6 +181,15 @@ ${topTask ? `<div class="now">
 
 <div class="grid">
   <div class="col">
+    <div class="card capture">
+      <h2>Log an update</h2>
+      <textarea id="capText" placeholder="What did you do, decide, or get stuck on? e.g. 'Going with B, parts kit. Found glass at the thrift store.'"></textarea>
+      <div class="caprow">
+        <select id="capTask"><option value="">General</option>${tasks.map(t => `<option value="${esc(t.text).replace(/"/g, "&quot;").slice(0, 60)}">${esc(t.text).slice(0, 40)}</option>`).join("")}</select>
+        <button id="capSend">Send</button>
+      </div>
+      <div id="capStatus"></div>
+    </div>
     <div class="card">
       <h2>This week's tasks</h2>
       ${tasks.map(t => `<details class="acc"><summary><span class="box"></span><span class="t">${md(t.text)}${t.tag ? `<span class="mini">${t.tag}</span>` : ""}</span><span class="chev">&#9656;</span></summary><div class="detail">${taskDetail(t)}</div></details>`).join("") || "<p class='detail'>No tasks yet.</p>"}
@@ -198,6 +215,29 @@ ${topTask ? `<div class="now">
 </div>
 
 <div class="foot">VEIT Company OS</div>
+<script>
+// Capture: POST the update to the Cloudflare Worker, which saves it to the plan's inbox.
+var CAPTURE_URL = "CAPTURE_URL_PLACEHOLDER";
+(function(){
+  var btn=document.getElementById("capSend"), txt=document.getElementById("capText"),
+      sel=document.getElementById("capTask"), st=document.getElementById("capStatus");
+  if(!btn) return;
+  function setSt(m,c){ st.textContent=m; st.className=c||""; }
+  btn.addEventListener("click", async function(){
+    var t=(txt.value||"").trim();
+    if(!t){ setSt("Type something first.","err"); return; }
+    if(CAPTURE_URL.indexOf("PLACEHOLDER")>-1){ setSt("Capture box not connected yet.","err"); return; }
+    btn.disabled=true; setSt("Sending...");
+    try{
+      var r=await fetch(CAPTURE_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({text:t,task:sel.value||""})});
+      if(r.ok){ setSt("Logged. Your Coach will fold it in.","ok"); txt.value=""; }
+      else{ setSt("Save failed ("+r.status+"). Try again.","err"); }
+    }catch(e){ setSt("Network error. Try again.","err"); }
+    btn.disabled=false;
+  });
+})();
+</script>
 </body></html>`;
 
 fs.writeFileSync(process.argv[4], html);

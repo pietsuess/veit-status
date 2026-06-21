@@ -67,6 +67,14 @@ details[open] .chev{transform:rotate(90deg)}
 .foot{margin-top:30px;text-align:center;font-size:.7rem;color:#5f5275}
 a{color:var(--coral)}
 @media(max-width:480px){html{font-size:16px}h1{font-size:1.7rem}.now .task{font-size:1.12rem}}
+.capture textarea{width:100%;min-height:84px;background:#181225;border:1px solid var(--line);border-radius:10px;
+ color:var(--cream);padding:11px;font:inherit;font-size:.92rem;resize:vertical}
+.caprow{display:flex;gap:8px;margin-top:9px}
+.caprow select{flex:1;min-width:0;background:#181225;border:1px solid var(--line);border-radius:10px;color:var(--cream);padding:9px;font:inherit;font-size:.82rem}
+.caprow button{flex:0 0 auto;background:var(--coral);color:#fff;border:0;border-radius:10px;padding:9px 22px;font:inherit;font-weight:700;cursor:pointer}
+.caprow button:disabled{opacity:.5}
+#capStatus{font-size:.78rem;margin-top:8px;min-height:1.1em}
+#capStatus.ok{color:var(--green)}#capStatus.err{color:#ff8a8a}
 </style></head><body>
 
 <header><h1>VEIT</h1><span class="tag-week">this week</span></header>
@@ -81,6 +89,15 @@ a{color:var(--coral)}
 
 <div class="grid">
   <div class="col">
+    <div class="card capture">
+      <h2>Log an update</h2>
+      <textarea id="capText" placeholder="What did you do, decide, or get stuck on? e.g. 'Going with B, parts kit. Found glass at the thrift store.'"></textarea>
+      <div class="caprow">
+        <select id="capTask"><option value="">General</option><option value="Decide the offer model (A/B/C/D). Write one paragraph on why">Decide the offer model (A/B/C/D). Write </option><option value="List every physical part in the current prototype: printed s">List every physical part in the current </option><option value="Time one full print + assembly, note filament used. (Feeds p">Time one full print + assembly, note fil</option></select>
+        <button id="capSend">Send</button>
+      </div>
+      <div id="capStatus"></div>
+    </div>
     <div class="card">
       <h2>This week's tasks</h2>
       <details class="acc"><summary><span class="box"></span><span class="t">Decide the offer model (A/B/C/D). Write one paragraph on why.<span class="mini">M0</span></span><span class="chev">&#9656;</span></summary><div class="detail"><p class="why">Part of <b>M0 - Define the offer</b></p><p class="d-intro">Pick the offer. Everything downstream (price, store, instructions) depends on it:</p><div class="opts"><div class="opt"><span class="ltr">A</span><div><b>Assembled kit</b><span>printed parts + washers + hardware, shipped ready to build. Highest touch, highest price.</span></div></div><div class="opt"><span class="ltr">B</span><div><b>Parts kit, BYO glass</b><span>printed sections + washers only, buyer sources glass. Cheaper, on-brand (found optics).</span></div></div><div class="opt"><span class="ltr">C</span><div><b>Downloadable files</b><span>sell the print files + build guide (Dora Goodman model). No fulfillment, lowest price, scales.</span></div></div><div class="opt"><span class="ltr">D</span><div><b>Workshop / experience</b><span>run it as a making session. Highest margin per head, not scalable.</span></div></div></div><p class="rec">Recommendation to pressure-test: start with B or C to get to a first sale fast, add A later. Decide by end of this week.</p></div></details><details class="acc"><summary><span class="box"></span><span class="t">List every physical part in the current prototype: printed sections, washers, glass, hardware.<span class="mini">M1</span></span><span class="chev">&#9656;</span></summary><div class="detail"><p class="why">Part of <b>M1 - Productize one sellable unit</b></p><p class="d-intro">Lock the printed parts, washer/glass spec, hardware list (BOM), and a build guide. One configuration, not infinite.</p></div></details><details class="acc"><summary><span class="box"></span><span class="t">Time one full print + assembly, note filament used. (Feeds pricing.)<span class="mini">M2</span></span><span class="chev">&#9656;</span></summary><div class="detail"><p class="why">Part of <b>M2 - Economics</b></p><p class="d-intro">Cost per unit (print time, filament, hardware, your time), set price, confirm margin.</p></div></details>
@@ -106,4 +123,27 @@ a{color:var(--coral)}
 </div>
 
 <div class="foot">VEIT Company OS</div>
+<script>
+// Capture: POST the update to the Cloudflare Worker, which saves it to the plan's inbox.
+var CAPTURE_URL = "CAPTURE_URL_PLACEHOLDER";
+(function(){
+  var btn=document.getElementById("capSend"), txt=document.getElementById("capText"),
+      sel=document.getElementById("capTask"), st=document.getElementById("capStatus");
+  if(!btn) return;
+  function setSt(m,c){ st.textContent=m; st.className=c||""; }
+  btn.addEventListener("click", async function(){
+    var t=(txt.value||"").trim();
+    if(!t){ setSt("Type something first.","err"); return; }
+    if(CAPTURE_URL.indexOf("PLACEHOLDER")>-1){ setSt("Capture box not connected yet.","err"); return; }
+    btn.disabled=true; setSt("Sending...");
+    try{
+      var r=await fetch(CAPTURE_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({text:t,task:sel.value||""})});
+      if(r.ok){ setSt("Logged. Your Coach will fold it in.","ok"); txt.value=""; }
+      else{ setSt("Save failed ("+r.status+"). Try again.","err"); }
+    }catch(e){ setSt("Network error. Try again.","err"); }
+    btn.disabled=false;
+  });
+})();
+</script>
 </body></html>
