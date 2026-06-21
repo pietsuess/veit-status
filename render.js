@@ -85,7 +85,7 @@ sec("Running log").split(/\n-\s*/).forEach(chunk => {
     acts.push({ date: m[1], body });
   }
 });
-acts.reverse();
+// log is newest-first in the file; keep that order so Recent activity shows newest first
 
 const topTask = tasks[0];
 
