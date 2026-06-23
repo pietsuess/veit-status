@@ -78,9 +78,12 @@ const taskDetail = (t) => {
 // --- parse: recent activity ---
 const acts = [];
 sec("Running log").split(/\n-\s*/).forEach(chunk => {
-  const m = chunk.replace(/^-\s*/, "").match(/^(\d{4}-\d{2}-\d{2}):\s*([\s\S]*)/);
+  // date, then an OPTIONAL "(label)", then ":" - the weekly partner and manual
+  // entries both use "2026-06-22 (weekly review): ..."; fold the label into the body.
+  const m = chunk.replace(/^-\s*/, "").match(/^(\d{4}-\d{2}-\d{2})(?:\s*\(([^)]*)\))?:\s*([\s\S]*)/);
   if (m) {
-    let body = m[2].replace(/\s+/g, " ").trim();
+    let body = m[3].replace(/\s+/g, " ").trim();
+    if (m[2]) body = m[2].trim() + ": " + body;
     if (body.length > 180) body = body.slice(0, 177).replace(/\s+\S*$/, "") + "…";
     acts.push({ date: m[1], body });
   }
